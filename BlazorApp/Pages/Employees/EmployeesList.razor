@@ -1,0 +1,83 @@
+﻿@page "/EmployeesList"
+@using BlazorApp.Repositories
+@using BlazorApp.Models
+@inject EmployeeRepository employeeRepository
+
+<NavLink class="nav-link" href="AddEmployee">
+    <span class="oi oi-plus" aria-hidden="true">Add New</span>
+</NavLink>
+
+
+<h1>Employee Info</h1>
+@if (EmpObj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Emp Id</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Title</th>
+                <th>Title of Courtesy</th>
+                <th>BirthDate</th>
+                <th>HireDate</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Region</th>
+                <td>PostalCode</td>
+                <td>Country</td>
+                <td>Home Phone</td>
+                <td>Extension</td>
+                <td>Notes</td>
+                <td>ReportsTo</td>
+                <td>PhotoPath</td>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in EmpObj)
+            {
+                <tr>
+                    <td>@emp.EmployeeID</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.Title</td>
+                    <td>@emp.TitleOfCourtesy</td>
+                    <td>@emp.BirthDate</td>
+                    <td>@emp.HireDate</td>
+                    <td>@emp.Address</td>
+                    <td>@emp.City</td>
+                    <td>@emp.Region</td>
+                    <td>@emp.PostalCode</td>
+                    <td>@emp.Country</td>
+                    <td>@emp.HomePhone</td>
+                    <td>@emp.Extension</td>
+                    <td>@emp.Notes</td>
+                    <td>@emp.ReportsTo</td>
+                    <td>@emp.PhotoPath</td>
+                    <td>
+                        <a class="nav-link" href="EditEmployee/@emp.EmployeeID">
+                            <span class="oi oi-pencil" aria-hidden="true">Edit</span>
+                        </a>
+                        <a class="nav-link" href="Delete/@emp.EmployeeID">
+                            <span class="oi oi-trash" aria-hidden="true">Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Employee> EmpObj;
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => employeeRepository.GetEmployees());
+    }
+}
